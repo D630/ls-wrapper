@@ -1,5 +1,33 @@
 #!/usr/bin/env bash
 
+# ls-wrapper
+# Copyright (C) 2015 D630, GNU GPLv3
+# <https://github.com/D630/ls-wrapper.sh>
+
+# -- DEBUGGING.
+
+#printf '%s (%s)\n' "$BASH_VERSION" "${BASH_VERSINFO[5]}" && exit 0
+#set -o xtrace
+#exec 2>> ~/ls-wrapper.sh.log
+#set -o verbose
+#set -o noexec
+#set -o errexit
+#set -o nounset
+#set -o pipefail
+#trap '(read -p "[$BASH_SOURCE:$LINENO] $BASH_COMMAND?")' DEBUG
+
+#declare vars_base=$(set -o posix ; set)
+#fgrep -v -e "$vars_base" < <(set -o posix ; set) | \
+#egrep -v -e "^BASH_REMATCH=" \
+#         -e "^OPTIND=" \
+#         -e "^REPLY=" \
+#         -e "^BASH_LINENO=" \
+#         -e "^BASH_SOURCE=" \
+#         -e "^FUNCNAME=" | \
+#less
+
+# -- FUNCTIONS.
+
 __ls_do ()
 {
     unset -v \

@@ -417,32 +417,34 @@ if ! typeset -f __ls __ls_color > /dev/null 2>&1; then
     typeset __ls __ls_color;
     case "$(uname -s)" in
         Darwin | DragonFly | FreeBSD)
-            __ls='() { IFS=" " ls -G ${*} ; }';
-            __ls_color='() { IFS=" " CLICOLOR_FORCE=1 ls -G ${*} ; }'
+            __ls="() { IFS=' ' ls -G \\\$* ; }";
+            __ls_color="() { IFS=' ' CLICOLOR_FORCE=1 ls -G \\\$* ; }"
         ;;
         OpenBSD)
             if -v colorls > /dev/null; then
-                __ls='() { IFS=" " colorls -G ${*} ; }';
-                __ls_color='() { IFS=" " CLICOLOR_FORCE=1 colorls -G ${*} ; }';
+                __ls="() { IFS=' ' colorls -G \\\$* ; }";
+                __ls_color="() { IFS=" " CLICOLOR_FORCE=1 colorls -G \\\$* ; }";
             else
                 if -v gls > /dev/null; then
-                    __ls='() { IFS=" " gls --color=auto ${*} ; }';
-                    __ls_color='() { IFS=" " gls --color=always ${*} ; }';
+                    __ls="() { IFS=' ' gls --color=auto \\\$* ; }";
+                    __ls_color="() { IFS=" " gls --color=always \\\$* ; }";
                 else
-                    __ls='() { IFS=" " ls ${*} ; }';
-                    __ls_color='() { IFS=" " ls ${*} ; }';
+                    __ls="() { IFS=' ' ls \\\$* ; }";
+                    __ls_color="() { IFS=' ' ls \\\$* ; }";
                 fi;
             fi
         ;;
         *)
-            __ls='() { IFS=" " command ls --color=auto ${*} ; }';
-            __ls_color='() { IFS=" " command ls --color=always ${*} ; }'
+            __ls="() { IFS=' ' command ls --color=auto \\\$* ; }";
+            __ls_color="() { IFS=' ' command ls --color=always \\\$* ; }"
         ;;
     esac;
 
     if [[ -n "$2" ]]; then
         eval "${1}=\${!2}";
     else
+        eval __ls="\${__ls:+${__ls}}"
+        eval __ls_color="\${__ls_color:+${__ls_color}}"
         eval "__ls ${__ls}";
         eval "__ls_color ${__ls_color}";
     fi

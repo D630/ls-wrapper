@@ -297,8 +297,7 @@ __ls_find_inode ()
 if [[ "$1" == ":" ]]; then
     find -H "${2}/." ! -name . -prune -inum "$3" -exec basename '{}' \; 2> /dev/null;
 else
-    eval "${1}=\$(find -H "${2}/." ! -name . -prune -inum "$3" -exec basename '{}' \; 2> /dev/null)";
-    __ls_upvar "$1" "${!1}";
+    eval "${1}=\$(find -H "${2}/." ! -name . -prune -inum "$3" -exec basename '{}' \; 2> /dev/null)"
 fi
 
 __ls_get_checksum ()
@@ -385,7 +384,7 @@ ${ls_flag_x}
 ${ls_flag_1}
 SUM
 )";
-    __ls_upvar "$1" "${!1%% *}";
+    eval "${1}=\${!1%% *}";
 fi
 
 __ls_get_inode ()
@@ -394,7 +393,7 @@ if [[ "$1" == ":" ]]; then
     printf '%s\n' "${i%% *}";
 else
     eval "${1}=\$(ls -1id "$2")";
-    __ls_upvar "$1" "${!1%% *}";
+    eval "${1}=\${!1%% *}";
 fi
 
 __ls_mkdir ()
@@ -413,66 +412,40 @@ __ls_remove_color ()
 }
 
 __ls_set_aliases ()
-if ! typeset -f ls ls_color > /dev/null 2>&1; then
+if ! typeset -f __ls __ls_color > /dev/null 2>&1; then
+    unset -v __ls __ls_color;
+    typeset __ls __ls_color;
     case "$(uname -s)" in
         Darwin | DragonFly | FreeBSD)
-            function __ls ()
-            {
-                IFS=" " ls -G ${*}
-            };
-            function __ls_color ()
-            {
-                IFS=" " CLICOLOR_FORCE=1 ls -G ${*}
-            }
+            __ls='() { IFS=" " ls -G ${*} ; }';
+            __ls_color='() { IFS=" " CLICOLOR_FORCE=1 ls -G ${*} ; }'
         ;;
         OpenBSD)
             if -v colorls > /dev/null; then
-                function __ls ()
-                {
-                    IFS=" " colorls -G ${*}
-                };
-                function __ls_color ()
-                {
-                    IFS=" " CLICOLOR_FORCE=1 colorls -G ${*}
-                };
+                __ls='() { IFS=" " colorls -G ${*} ; }';
+                __ls_color='() { IFS=" " CLICOLOR_FORCE=1 colorls -G ${*} ; }';
             else
                 if -v gls > /dev/null; then
-                    function __ls ()
-                    {
-                        IFS=" " gls --color=auto ${*}
-                    };
-                    function __ls_color ()
-                    {
-                        IFS=" " gls --color=always ${*}
-                    };
+                    __ls='() { IFS=" " gls --color=auto ${*} ; }';
+                    __ls_color='() { IFS=" " gls --color=always ${*} ; }';
                 else
-                    function __ls ()
-                    {
-                        IFS=" " ls ${*}
-                    };
-                    function __ls_color ()
-                    {
-                        IFS=" " ls ${*}
-                    };
+                    __ls='() { IFS=" " ls ${*} ; }';
+                    __ls_color='() { IFS=" " ls ${*} ; }';
                 fi;
             fi
         ;;
         *)
-            function __ls ()
-            {
-                IFS=" " command ls --color=auto ${*}
-            };
-            function __ls_color ()
-            {
-                IFS=" " command ls --color=always ${*}
-            }
+            __ls='() { IFS=" " command ls --color=auto ${*} ; }';
+            __ls_color='() { IFS=" " command ls --color=always ${*} ; }'
         ;;
     esac;
 
-    [[ -n "$2" ]] && {
-        eval "${1}=\$(typeset -f "$2")";
-        __ls_upvar "$1" "${!1}";
-    };
+    if [[ -n "$2" ]]; then
+        eval "${1}=\${!2}";
+    else
+        eval "__ls ${__ls}";
+        eval "__ls_color ${__ls_color}";
+    fi
 fi
 
 __ls_upvar ()

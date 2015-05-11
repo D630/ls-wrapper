@@ -1,8 +1,10 @@
 Some shell subroutines to wrap up the POSIX ls command and to track all directory contents via txt files in a separat file hierarchy.
 
+The only non-POSIX option is `h` (human-readable), which appears in `GNU`, `FreeBSD`, `OpenBSD` and `MacOSX` versions of ls. Color support is also not specified by POSIX, but is available in this wrapper via the environment variable `LS_COLOR`; it depends on the ls version.
+
 ```
 Usage
-    [ <evar> ... ] __ls_do [ <ls-opt> ]     Wrap up ls and track directory
+    [ <evar> ... ] __ls_do [ <ls-opt> ... ] Wrap up ls and track directory
                                             content
     __ls_find_inode <ARG1> <path> <inum>    Find file in a directory via inode
                                             number and get its basename
@@ -42,7 +44,7 @@ Environment variables
             Default: '__ls_get_inode : "$ls_file_name"'
     LS_FILE_NAME=STR
             Default: '${PWD:-.}'
-    LS_FLAG_{A,C,F,H,L,R,S,a,c,d,f,g,i,k,l,m,n,o,p,q,r,s,t,u,x,1}=0/1
+    LS_FLAG_{A,C,F,H,L,R,S,a,c,d,f,g,h,i,k,l,m,n,o,p,q,r,s,t,u,x,1}=0/1
             Default: 0
     LS_HOOK_POST=FNAME
             Default: null
@@ -63,11 +65,11 @@ Hierarchy
     Content will be stored in "${LS_DIR_NAME}/${LS_FILE_INODE}/${LS_CHECKSUM}"
 
 Checksum
-    The relevant environment variables and their read order to calculate the
+    The relevant environment variables and their order to calculate the
     checksum is:
     'printf "%s\n" COLUMNS LANG LC_{ALLL,COLLATE,CTYPE,MESSAGES,TIME} \
         NLSPATH TZ LS_{COLOR,FILE_INODE} \
-        LS_FLAG_{A,C,F,H,L,R,S,a,c,d,f,g,i,k,l,m,n,o,p,q,r,s,t,u,x,1}'
+        LS_FLAG_{A,C,F,H,L,R,S,a,c,d,f,g,h,i,k,l,m,n,o,p,q,r,s,t,u,x,1}'
 
 Hook order
     ( LS_HOOK_PRAE && LS_HOOK_POST ) || \

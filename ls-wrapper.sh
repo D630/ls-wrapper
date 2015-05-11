@@ -53,6 +53,7 @@ __ls_do ()
         ls_flag_d \
         ls_flag_f \
         ls_flag_g \
+        ls_flag_h \
         ls_flag_i \
         ls_flag_k \
         ls_flag_l \
@@ -88,7 +89,7 @@ __ls_do ()
 
         unset -v OPTIND opt;
         typeset OPTIND=1 opt;
-        while getopts ":ACFHLRSacdfgiklmnopqrstux1" opt; do
+        while getopts ":ACFHLRSacdfghiklmnopqrstux1" opt; do
             case "$opt" in
                 A)
                     ls_flag_A=1
@@ -125,6 +126,9 @@ __ls_do ()
                 ;;
                 g)
                     ls_flag_g=1
+                ;;
+                h)
+                    ls_flag_h=1
                 ;;
                 i)
                     ls_flag_i=1
@@ -195,6 +199,7 @@ __ls_do ()
         ls_flag_d="${LS_FLAG_d:-${ls_flag_d}}" \
         ls_flag_f="${LS_FLAG_f:-${ls_flag_f}}" \
         ls_flag_g="${LS_FLAG_g:-${ls_flag_g}}" \
+        ls_flag_h="${LS_FLAG_h:-${ls_flag_h}}" \
         ls_flag_i="${LS_FLAG_i:-${ls_flag_i}}" \
         ls_flag_k="${LS_FLAG_k:-${ls_flag_k}}" \
         ls_flag_l="${LS_FLAG_l:-${ls_flag_l}}" \
@@ -230,7 +235,7 @@ __ls_do ()
         fi;
     done;
 
-    flags="${ls_flag_A}${ls_flag_C}${ls_flag_F}${ls_flag_H}${ls_flag_L}${ls_flag_R}${ls_flag_S}${ls_flag_a}${ls_flag_c}${ls_flag_d}${ls_flag_f}${ls_flag_g}${ls_flag_i}${ls_flag_k}${ls_flag_l}${ls_flag_m}${ls_flag_n}${ls_flag_o}${ls_flag_p}${ls_flag_q}${ls_flag_r}${ls_flag_s}${ls_flag_t}${ls_flag_u}${ls_flag_x}${ls_flag_1}";
+    flags="${ls_flag_A}${ls_flag_C}${ls_flag_F}${ls_flag_H}${ls_flag_L}${ls_flag_R}${ls_flag_S}${ls_flag_a}${ls_flag_c}${ls_flag_d}${ls_flag_f}${ls_flag_g}${ls_flag_h}${ls_flag_i}${ls_flag_k}${ls_flag_l}${ls_flag_m}${ls_flag_n}${ls_flag_o}${ls_flag_p}${ls_flag_q}${ls_flag_r}${ls_flag_s}${ls_flag_t}${ls_flag_u}${ls_flag_x}${ls_flag_1}";
 
     if [[ -n "$flags" ]]; then
         flags="${flags/#/-}";
@@ -326,6 +331,7 @@ ${ls_flag_c}
 ${ls_flag_d}
 ${ls_flag_f}
 ${ls_flag_g}
+${ls_flag_h}
 ${ls_flag_i}
 ${ls_flag_k}
 ${ls_flag_l}
@@ -368,6 +374,7 @@ ${ls_flag_c}
 ${ls_flag_d}
 ${ls_flag_f}
 ${ls_flag_g}
+${ls_flag_h}
 ${ls_flag_i}
 ${ls_flag_k}
 ${ls_flag_l}

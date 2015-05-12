@@ -430,7 +430,7 @@ if ! typeset -f __ls __ls_color > /dev/null 2>&1; then
         OpenBSD)
             if command -v colorls > /dev/null; then
                 __ls="() { IFS=' ' colorls -G \\\$* ; }";
-                __ls_color="() { IFS=" " CLICOLOR_FORCE=1 colorls -G \\\$* ; }";
+                __ls_color="() { IFS=' ' CLICOLOR_FORCE=1 colorls -G \\\$* ; }";
             else
                 if command -v gls > /dev/null; then
                     __ls="() { IFS=' ' gls --color=auto \\\$* ; }";

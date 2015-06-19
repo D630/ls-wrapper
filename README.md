@@ -48,9 +48,7 @@ Environment variables
             Default: 0
     LS_HOOK_POST=FNAME
             Default: null
-    LS_HOOK_POST_PIPE=FNAME
-            Default: null
-    LS_HOOK_POST_TEE=0/1
+    LS_HOOK_TEE=0/1
             Default: 0
     LS_HOOK_PRAE=FNAME
             Default: null
@@ -65,18 +63,20 @@ Hierarchy
     Content will be stored in "${LS_DIR_NAME}/${LS_FILE_INODE}/${LS_CHECKSUM}"
 
 Checksum
-    The relevant environment variables and their order to calculate the
+    The order of the relevant environment variables to calculate the
     checksum is:
     'printf "%s\n" COLUMNS LANG LC_{ALLL,COLLATE,CTYPE,MESSAGES,TIME} \
         NLSPATH TZ LS_{COLOR,FILE_INODE} \
         LS_FLAG_{A,C,F,H,L,R,S,a,c,d,f,g,h,i,k,l,m,n,o,p,q,r,s,t,u,x,1}'
 
 Hook order
-    ( LS_HOOK_PRAE && LS_HOOK_POST ) || \
-    ( LS_HOOK_PRAE && LS_HOOK_POST_PIPE ) ||
-    ( LS_HOOK_PRAE && LS_HOOK_POST_TEE ) || \
-    LS_HOOK_PRAE || \
-    LS_HOOK_POST || \
-    LS_HOOK_POST_PIPE || \
-    LS_HOOK_POST_TEE
+    ( LS_HOOK_PRAE && LS_HOOK_POST ) || LS_HOOK_PRAE || LS_HOOK_POST
+
+    That is:
+        LS_HOOK_PRAE | __ls_perform | LS_HOOK_POST
+        LS_HOOK_PRAE | __ls_perform
+        __ls_perform | LS_HOOK_POST
+Notes
+    If LS_REMOVE is not 0, the file with LS_CHECKSUM will be removed from the file
+    hierarchy.
 ```

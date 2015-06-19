@@ -28,18 +28,22 @@
 
 # -- FUNCTIONS.
 
+__ls_build ()
+{
+        if [[ -n "$ls_hook_prae" && -n "$ls_hook_post" ]]; then
+                ${ls_hook_prae} | __ls_perform "$ls_command" | ${ls_hook_post}
+        elif [[ -n "$ls_hook_prae" ]]; then
+                ${ls_hook_prae} | __ls_perform "$ls_command"
+        elif [[ -n "$ls_hook_post" ]]; then
+                __ls_perform "$ls_command" | ${ls_hook_post}
+        else
+            __ls_perform "$ls_command"
+        fi;
+}
+
 __ls_do ()
 {
     unset -v \
-        f \
-        flags \
-        ls_checksum \
-        ls_checksum_command \
-        ls_color \
-        ls_command \
-        ls_dir_name \
-        ls_file_inode \
-        ls_file_name \
         ls_flag_1 \
         ls_flag_A \
         ls_flag_C \
@@ -66,14 +70,7 @@ __ls_do ()
         ls_flag_s \
         ls_flag_t \
         ls_flag_u \
-        ls_flag_x \
-        ls_hook_post \
-        ls_hook_post_tee \
-        ls_hook_post_pipe \
-        ls_hook_prae \
-        ls_mkdir_command \
-        ls_print_command \
-        ls_remove ;
+        ls_flag_x;
 
     (($# > 0)) && {
         if [[ $# -gt 2 ]]; then
@@ -214,13 +211,14 @@ __ls_do ()
         ls_flag_u="${LS_FLAG_u:-${ls_flag_u}}" \
         ls_flag_x="${LS_FLAG_x:-${ls_flag_x}}" \
         ls_flag_1="${LS_FLAG_1:-${ls_flag_1}}" \
-        ls_hook_post_tee="${LS_HOOK_POST_TEE:-0}" \
+        ls_hook_tee="${LS_HOOK_TEE:-0}" \
         ls_remove="${LS_REMOVE:-0}";
 
     typeset \
+        f \
+        flags \
         ls_checksum_command="${LS_CHECKSUM_COMMAND:-md5sum}" \
         ls_hook_post="$LS_HOOK_POST" \
-        ls_hook_post_pipe="$LS_HOOK_POST_PIPE" \
         ls_hook_prae="$LS_HOOK_PRAE" \
         ls_mkdir_command="${LS_MKDIR_COMMAND:-mkdir -p}" \
         ls_print_command="${LS_PRINT_COMMAND:-cat}" ;
@@ -244,14 +242,10 @@ __ls_do ()
     fi;
 
     if [[ -f "${ls_dir_name}/${ls_file_inode}/${ls_checksum}" ]]; then
-        if [[ -n "$ls_remove" ]]; then
+        if [[ -n "$ls_remove" && "$ls_hook_tee" -eq 0 ]]; then
             rm "${ls_dir_name}/${ls_file_inode}/${ls_checksum}";
-        elif [[ -n "$ls_hook_post_pipe" ]]; then
-            __ls_file_print | ${ls_hook_post_pipe};
-        elif [[ -n "$ls_hook_post_tee" ]]; then
+        elif (( ls_hook_tee == 1 )); then
             __ls_file_print;
-        elif [[ -n "$ls_hook_post" ]]; then
-            ${ls_hook_post};
         fi;
     else
         __ls_mkdir;
@@ -261,35 +255,11 @@ __ls_do ()
         else
             typeset ls_command="__ls_color";
         fi;
-        if [[ -n "$ls_hook_prae" && -n "$ls_hook_post" ]]; then
-            __ls_perform "$ls_command" |
-            ${ls_hook_prae} > "${ls_dir_name}/${ls_file_inode}/${ls_checksum}";
-            ${ls_hook_post};
-        elif [[ -n "$ls_hook_prae" && -n "$ls_hook_post_pipe" ]]; then
-            __ls_perform "$ls_command" |
-            ${ls_hook_prae} |
-            tee "${ls_dir_name}/${ls_file_inode}/${ls_checksum}" |
-            ${ls_hook_post_pipe};
-        elif [[ -n "$ls_hook_prae" && -n "$ls_hook_post_tee" ]]; then
-            __ls_perform "$ls_command" |
-            ${ls_hook_prae} |
-            tee "${ls_dir_name}/${ls_file_inode}/${ls_checksum}";
-        elif [[ -n "$ls_hook_prae" ]]; then
-            __ls_perform "$ls_command" |
-            ${ls_hook_prae} > "${ls_dir_name}/${ls_file_inode}/${ls_checksum}";
-        elif [[ -n "$ls_hook_post" ]]; then
-            __ls_perform "$ls_command" > "${ls_dir_name}/${ls_file_inode}/${ls_checksum}";
-            ${ls_hook_post};
-        elif [[ -n "$ls_hook_post_pipe" ]]; then
-            __ls_perform "$ls_command" |
-            tee "${ls_dir_name}/${ls_file_inode}/${ls_checksum}" |
-            ${ls_hook_post_pipe};
-        elif [[ -n "$ls_hook_post_tee" ]]; then
-            __ls_perform "$ls_command" |
-            tee "${ls_dir_name}/${ls_file_inode}/${ls_checksum}";
+        if ((ls_hook_tee == 1)); then
+            __ls_build | tee "${ls_dir_name}/${ls_file_inode}/${ls_checksum}";
         else
-            __ls_perform "$ls_command" > "${ls_dir_name}/${ls_file_inode}/${ls_checksum}";
-        fi;
+            __ls_build > "${ls_dir_name}/${ls_file_inode}/${ls_checksum}";
+        fi
     fi
 }
 
@@ -455,13 +425,4 @@ if ! typeset -f __ls __ls_color > /dev/null 2>&1; then
         eval "__ls ${__ls}";
         eval "__ls_color ${__ls_color}";
     fi
-fi
-
-__ls_upvar ()
-if unset -v "$1"; then
-    if (($# == 2)); then
-        eval "${1}=\${2}";
-    else
-        eval "${1}"'=("${@:2}")';
-    fi;
 fi

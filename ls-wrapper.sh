@@ -437,7 +437,7 @@ __ls_mkdir ()
 
 __ls_perform ()
 {
-    eval ${1} ${flags} "$ls_file_name"
+    ${1} ${flags} "$ls_file_name"
 }
 
 __ls_remove_color ()
@@ -475,8 +475,9 @@ then
                 fi
         ;;
         *)
-                __ls="() { IFS=' ' command ls --color=auto \\\$* ; }"
-                __ls_color="() { IFS=' ' command ls --color=always \\\$* ; }"
+                #__ls="() { IFS=' ' command ls --color=auto \\\$* ; }"
+                __ls="() { IFS=\\' \\' eval command ls --color=auto \\\${*// /\\\\\\\\\\ \\} ; }"
+                __ls_color="() { IFS=\\' \\' eval command ls --color=always \\\${*// /\\\\\\\\\\ \\} ; }"
         ;;
         esac
 

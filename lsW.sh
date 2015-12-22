@@ -199,7 +199,7 @@ LsW::Do ()
 
         builtin typeset \
                 lsw_file_name="${LSW_FILE_NAME:-${lsw_file_name:-${PWD:-.}}}" \
-                lsw_dir_name="${LSW_DIR_NAME:-${TMPDIR:-/tmp}/ls}";
+                lsw_dir_name="${LSW_DIR_NAME:-${TMPDIR:-/tmp}/lsW}";
 
         builtin typeset lsw_file_inode="${LSW_FILE_INODE:-$(LsW::GetInode : "$lsw_file_name")}"
 

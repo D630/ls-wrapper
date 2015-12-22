@@ -492,3 +492,5 @@ then
                 eval "__ls_color ${__ls_color}"
         fi
 fi
+
+# vim: set ts=8 sw=8 tw=0 et :

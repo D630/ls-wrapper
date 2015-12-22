@@ -30,55 +30,55 @@
 
 LsW::Build ()
 if
-        [[ -n $ls_hook_prae && -n $ls_hook_post ]]
+        [[ -n $lsw_hook_prae && -n $lsw_hook_post ]]
 then
-        ${ls_hook_prae} \
-        | LsW::Perform "$ls_command" \
-        | ${ls_hook_post};
+        ${lsw_hook_prae} \
+        | LsW::Perform "$lsw_command" \
+        | ${lsw_hook_post};
 elif
-        [[ -n $ls_hook_prae ]]
+        [[ -n $lsw_hook_prae ]]
 then
-        ${ls_hook_prae} \
-        | LsW::Perform "$ls_command";
+        ${lsw_hook_prae} \
+        | LsW::Perform "$lsw_command";
 elif
-        [[ -n $ls_hook_post ]]
+        [[ -n $lsw_hook_post ]]
 then
-        LsW::Perform "$ls_command" \
-        | ${ls_hook_post};
+        LsW::Perform "$lsw_command" \
+        | ${lsw_hook_post};
 else
-        LsW::Perform "$ls_command"
+        LsW::Perform "$lsw_command"
 fi
 
 LsW::Do ()
 {
         builtin unset -v \
-                ls_flag_1 \
-                ls_flag_A \
-                ls_flag_C \
-                ls_flag_F \
-                ls_flag_H \
-                ls_flag_L \
-                ls_flag_R \
-                ls_flag_S \
-                ls_flag_a \
-                ls_flag_c \
-                ls_flag_d \
-                ls_flag_f \
-                ls_flag_g \
-                ls_flag_h \
-                ls_flag_i \
-                ls_flag_k \
-                ls_flag_l \
-                ls_flag_m \
-                ls_flag_n \
-                ls_flag_o \
-                ls_flag_p \
-                ls_flag_q \
-                ls_flag_r \
-                ls_flag_s \
-                ls_flag_t \
-                ls_flag_u \
-                ls_flag_x;
+                lsw_flag_1 \
+                lsw_flag_A \
+                lsw_flag_C \
+                lsw_flag_F \
+                lsw_flag_H \
+                lsw_flag_L \
+                lsw_flag_R \
+                lsw_flag_S \
+                lsw_flag_a \
+                lsw_flag_c \
+                lsw_flag_d \
+                lsw_flag_f \
+                lsw_flag_g \
+                lsw_flag_h \
+                lsw_flag_i \
+                lsw_flag_k \
+                lsw_flag_l \
+                lsw_flag_m \
+                lsw_flag_n \
+                lsw_flag_o \
+                lsw_flag_p \
+                lsw_flag_q \
+                lsw_flag_r \
+                lsw_flag_s \
+                lsw_flag_t \
+                lsw_flag_u \
+                lsw_flag_x;
 
         if
                 (( $# ))
@@ -89,7 +89,7 @@ LsW::Do ()
                         1>&2 IFS=" " builtin printf "Too many arguments: '%s'\n" "$*"
                         builtin return
                 else
-                        builtin typeset f ls_file_name
+                        builtin typeset f lsw_file_name
                         for f
                         do
                                 if
@@ -98,7 +98,7 @@ LsW::Do ()
                                         1>&2 builtin printf "Cannot access '%s': No such directory\n" "$f"
                                         builtin return 1
                                 else
-                                        ls_file_name=$f
+                                        lsw_file_name=$f
                                 fi
                         done
                 fi
@@ -110,85 +110,85 @@ LsW::Do ()
                 do
                         case $opt in
                         A)
-                                ls_flag_A=1
+                                lsw_flag_A=1
                         ;;
                         C)
-                                ls_flag_C=1
+                                lsw_flag_C=1
                         ;;
                         F)
-                                ls_flag_F=1
+                                lsw_flag_F=1
                         ;;
                         H)
-                                ls_flag_H=1
+                                lsw_flag_H=1
                         ;;
                         L)
-                                ls_flag_L=1
+                                lsw_flag_L=1
                         ;;
                         R)
-                                ls_flag_R=1
+                                lsw_flag_R=1
                         ;;
                         S)
-                                ls_flag_S=1
+                                lsw_flag_S=1
                         ;;
                         a)
-                                ls_flag_a=1
+                                lsw_flag_a=1
                         ;;
                         c)
-                                ls_flag_c=1
+                                lsw_flag_c=1
                         ;;
                         d)
-                                ls_flag_d=1
+                                lsw_flag_d=1
                         ;;
                         f)
-                                ls_flag_f=1
+                                lsw_flag_f=1
                         ;;
                         g)
-                                ls_flag_g=1
+                                lsw_flag_g=1
                         ;;
                         h)
-                                ls_flag_h=1
+                                lsw_flag_h=1
                         ;;
                         i)
-                                ls_flag_i=1
+                                lsw_flag_i=1
                         ;;
                         k)
-                                ls_flag_k=1
+                                lsw_flag_k=1
                         ;;
                         l)
-                                ls_flag_l=1
+                                lsw_flag_l=1
                         ;;
                         m)
-                                ls_flag_m=1
+                                lsw_flag_m=1
                         ;;
                         n)
-                                ls_flag_n=1
+                                lsw_flag_n=1
                         ;;
                         o)
-                                ls_flag_o=1
+                                lsw_flag_o=1
                         ;;
                         p)
-                                ls_flag_p=1
+                                lsw_flag_p=1
                         ;;
                         q)
-                                ls_flag_q=1
+                                lsw_flag_q=1
                         ;;
                         r)
-                                ls_flag_r=1
+                                lsw_flag_r=1
                         ;;
                         s)
-                                ls_flag_s=1
+                                lsw_flag_s=1
                         ;;
                         t)
-                                ls_flag_t=1
+                                lsw_flag_t=1
                         ;;
                         u)
-                                ls_flag_u=1
+                                lsw_flag_u=1
                         ;;
                         x)
-                                ls_flag_x=1
+                                lsw_flag_x=1
                         ;;
                         1)
-                                ls_flag_1=1
+                                lsw_flag_1=1
                         ;;
                         \?)
                                 1>&2 builtin printf "Unknown flag: '-%s'\n" "$OPTARG"
@@ -198,55 +198,55 @@ LsW::Do ()
         fi
 
         builtin typeset \
-                ls_file_name="${LS_FILE_NAME:-${ls_file_name:-${PWD:-.}}}" \
-                ls_dir_name="${LS_DIR_NAME:-${TMPDIR:-/tmp}/ls}";
+                lsw_file_name="${LSW_FILE_NAME:-${lsw_file_name:-${PWD:-.}}}" \
+                lsw_dir_name="${LSW_DIR_NAME:-${TMPDIR:-/tmp}/ls}";
 
-        builtin typeset ls_file_inode="${LS_FILE_INODE:-$(LsW::GetInode : "$ls_file_name")}"
+        builtin typeset lsw_file_inode="${LSW_FILE_INODE:-$(LsW::GetInode : "$lsw_file_name")}"
 
         builtin typeset -i \
-                ls_color=${LS_COLOR:-0} \
-                ls_flag_A=${LS_FLAG_A:-${ls_flag_A}} \
-                ls_flag_C=${LS_FLAG_C:-${ls_flag_C}} \
-                ls_flag_F=${LS_FLAG_F:-${ls_flag_F}} \
-                ls_flag_H=${LS_FLAG_H:-${ls_flag_H}} \
-                ls_flag_L=${LS_FLAG_L:-${ls_flag_L}} \
-                ls_flag_R=${LS_FLAG_R:-${ls_flag_R}} \
-                ls_flag_S=${LS_FLAG_S:-${ls_flag_S}} \
-                ls_flag_a=${LS_FLAG_a:-${ls_flag_a}} \
-                ls_flag_c=${LS_FLAG_c:-${ls_flag_c}} \
-                ls_flag_d=${LS_FLAG_d:-${ls_flag_d}} \
-                ls_flag_f=${LS_FLAG_f:-${ls_flag_f}} \
-                ls_flag_g=${LS_FLAG_g:-${ls_flag_g}} \
-                ls_flag_h=${LS_FLAG_h:-${ls_flag_h}} \
-                ls_flag_i=${LS_FLAG_i:-${ls_flag_i}} \
-                ls_flag_k=${LS_FLAG_k:-${ls_flag_k}} \
-                ls_flag_l=${LS_FLAG_l:-${ls_flag_l}} \
-                ls_flag_m=${LS_FLAG_m:-${ls_flag_m}} \
-                ls_flag_n=${LS_FLAG_n:-${ls_flag_n}} \
-                ls_flag_o=${LS_FLAG_o:-${ls_flag_o}} \
-                ls_flag_p=${LS_FLAG_p:-${ls_flag_p}} \
-                ls_flag_q=${LS_FLAG_q:-${ls_flag_q}} \
-                ls_flag_r=${LS_FLAG_r:-${ls_flag_r}} \
-                ls_flag_s=${LS_FLAG_s:-${ls_flag_s}} \
-                ls_flag_t=${LS_FLAG_t:-${ls_flag_t}} \
-                ls_flag_u=${LS_FLAG_u:-${ls_flag_u}} \
-                ls_flag_x=${LS_FLAG_x:-${ls_flag_x}} \
-                ls_flag_1=${LS_FLAG_1:-${ls_flag_1}} \
-                ls_hook_tee=${LS_HOOK_TEE:-0} \
-                ls_remove=${LS_REMOVE:-0};
+                lsw_color=${LSW_COLOR:-0} \
+                lsw_flag_A=${LSW_FLAG_A:-${lsw_flag_A}} \
+                lsw_flag_C=${LSW_FLAG_C:-${lsw_flag_C}} \
+                lsw_flag_F=${LSW_FLAG_F:-${lsw_flag_F}} \
+                lsw_flag_H=${LSW_FLAG_H:-${lsw_flag_H}} \
+                lsw_flag_L=${LSW_FLAG_L:-${lsw_flag_L}} \
+                lsw_flag_R=${LSW_FLAG_R:-${lsw_flag_R}} \
+                lsw_flag_S=${LSW_FLAG_S:-${lsw_flag_S}} \
+                lsw_flag_a=${LSW_FLAG_a:-${lsw_flag_a}} \
+                lsw_flag_c=${LSW_FLAG_c:-${lsw_flag_c}} \
+                lsw_flag_d=${LSW_FLAG_d:-${lsw_flag_d}} \
+                lsw_flag_f=${LSW_FLAG_f:-${lsw_flag_f}} \
+                lsw_flag_g=${LSW_FLAG_g:-${lsw_flag_g}} \
+                lsw_flag_h=${LSW_FLAG_h:-${lsw_flag_h}} \
+                lsw_flag_i=${LSW_FLAG_i:-${lsw_flag_i}} \
+                lsw_flag_k=${LSW_FLAG_k:-${lsw_flag_k}} \
+                lsw_flag_l=${LSW_FLAG_l:-${lsw_flag_l}} \
+                lsw_flag_m=${LSW_FLAG_m:-${lsw_flag_m}} \
+                lsw_flag_n=${LSW_FLAG_n:-${lsw_flag_n}} \
+                lsw_flag_o=${LSW_FLAG_o:-${lsw_flag_o}} \
+                lsw_flag_p=${LSW_FLAG_p:-${lsw_flag_p}} \
+                lsw_flag_q=${LSW_FLAG_q:-${lsw_flag_q}} \
+                lsw_flag_r=${LSW_FLAG_r:-${lsw_flag_r}} \
+                lsw_flag_s=${LSW_FLAG_s:-${lsw_flag_s}} \
+                lsw_flag_t=${LSW_FLAG_t:-${lsw_flag_t}} \
+                lsw_flag_u=${LSW_FLAG_u:-${lsw_flag_u}} \
+                lsw_flag_x=${LSW_FLAG_x:-${lsw_flag_x}} \
+                lsw_flag_1=${LSW_FLAG_1:-${lsw_flag_1}} \
+                lsw_hook_tee=${LSW_HOOK_TEE:-0} \
+                lsw_remove=${LSW_REMOVE:-0};
 
         builtin typeset \
                 f \
                 flags \
-                ls_checksum_command="${LS_CHECKSUM_COMMAND:-md5sum}" \
-                ls_hook_post="$LS_HOOK_POST" \
-                ls_hook_prae="$LS_HOOK_PRAE" \
-                ls_mkdir_command="${LS_MKDIR_COMMAND:-mkdir -p}" \
-                ls_print_command="${LS_PRINT_COMMAND:-cat}";
+                lsw_checksum_command="${LSW_CHECKSUM_COMMAND:-md5sum}" \
+                lsw_hook_post="$LSW_HOOK_POST" \
+                lsw_hook_prae="$LSW_HOOK_PRAE" \
+                lsw_mkdir_command="${LSW_MKDIR_COMMAND:-mkdir -p}" \
+                lsw_print_command="${LSW_PRINT_COMMAND:-cat}";
 
-        builtin typeset ls_checksum="${LS_CHECKSUM:-$(LsW::GetChecksum :)}"
+        builtin typeset lsw_checksum="${LSW_CHECKSUM:-$(LsW::GetChecksum :)}"
 
-        for f in ${!ls_flag_*} ${!ls_remove*}
+        for f in ${!lsw_flag_*} ${!lsw_remove*}
         do
                 if
                         (( ${!f} ))
@@ -257,12 +257,12 @@ LsW::Do ()
                 fi
         done
 
-        flags=${ls_flag_A}${ls_flag_C}${ls_flag_F}${ls_flag_H}${ls_flag_L}
-        flags+=${ls_flag_R}${ls_flag_S}${ls_flag_a}${ls_flag_c}${ls_flag_d}
-        flags+=${ls_flag_f}${ls_flag_g}${ls_flag_h}${ls_flag_i}${ls_flag_k}
-        flags+=${ls_flag_l}${ls_flag_m}${ls_flag_n}${ls_flag_o}${ls_flag_p}
-        flags+=${ls_flag_q}${ls_flag_r}${ls_flag_s}${ls_flag_t}${ls_flag_u}
-        flags+=${ls_flag_x}${ls_flag_1}
+        flags=${lsw_flag_A}${lsw_flag_C}${lsw_flag_F}${lsw_flag_H}${lsw_flag_L}
+        flags+=${lsw_flag_R}${lsw_flag_S}${lsw_flag_a}${lsw_flag_c}${lsw_flag_d}
+        flags+=${lsw_flag_f}${lsw_flag_g}${lsw_flag_h}${lsw_flag_i}${lsw_flag_k}
+        flags+=${lsw_flag_l}${lsw_flag_m}${lsw_flag_n}${lsw_flag_o}${lsw_flag_p}
+        flags+=${lsw_flag_q}${lsw_flag_r}${lsw_flag_s}${lsw_flag_t}${lsw_flag_u}
+        flags+=${lsw_flag_x}${lsw_flag_1}
 
         if
                 [[ -n $flags ]]
@@ -273,14 +273,14 @@ LsW::Do ()
         fi
 
         if
-                [[ -f ${ls_dir_name}/${ls_file_inode}/${ls_checksum} ]]
+                [[ -f ${lsw_dir_name}/${lsw_file_inode}/${lsw_checksum} ]]
         then
                 if
-                        [[ -n $ls_remove && $ls_hook_tee -eq 0 ]]
+                        [[ -n $lsw_remove && $lsw_hook_tee -eq 0 ]]
                 then
-                        command rm "${ls_dir_name}/${ls_file_inode}/${ls_checksum}"
+                        command rm "${lsw_dir_name}/${lsw_file_inode}/${lsw_checksum}"
                 elif
-                        (( ls_hook_tee ))
+                        (( lsw_hook_tee ))
                 then
                         LsW::PrintFile
                 fi
@@ -288,19 +288,19 @@ LsW::Do ()
                 LsW::Mkdir
                 LsW::SetAliases
                 if
-                        (( ls_color ))
+                        (( lsw_color ))
                 then
-                        typeset ls_command=__ls_color
+                        typeset lsw_command=__lsX_color
                 else
-                        typeset ls_command=__ls
+                        typeset lsw_command=__lsX
                 fi
                 if
-                        (( ls_hook_tee ))
+                        (( lsw_hook_tee ))
                 then
                         LsW::Build \
-                        | command tee "${ls_dir_name}/${ls_file_inode}/${ls_checksum}";
+                        | command tee "${lsw_dir_name}/${lsw_file_inode}/${lsw_checksum}";
                 else
-                        > "${ls_dir_name}/${ls_file_inode}/${ls_checksum}" \
+                        > "${lsw_dir_name}/${lsw_file_inode}/${lsw_checksum}" \
                         LsW::Build
                 fi
         fi
@@ -308,7 +308,7 @@ LsW::Do ()
 
 LsW::PrintFile ()
 {
-        ${ls_print_command} "${ls_dir_name}/${ls_file_inode}/${ls_checksum}"
+        ${lsw_print_command} "${lsw_dir_name}/${lsw_file_inode}/${lsw_checksum}"
 }
 
 LsW::FindInode ()
@@ -329,7 +329,7 @@ LsW::GetChecksum ()
 if
         [[ $1 == \: ]]
 then
-        builtin typeset +i s="$( ${ls_checksum_command} <<-SUM
+        builtin typeset +i s="$( ${lsw_checksum_command} <<-SUM
 ${COLUMNS}
 ${LANG}
 ${LC_ALL}
@@ -339,40 +339,40 @@ ${LC_MESSAGES}
 ${LC_TIME}
 ${NLSPATH}
 ${TZ}
-${ls_color}
-${ls_file_inode}
-${ls_flag_A}
-${ls_flag_C}
-${ls_flag_F}
-${ls_flag_H}
-${ls_flag_L}
-${ls_flag_R}
-${ls_flag_S}
-${ls_flag_a}
-${ls_flag_c}
-${ls_flag_d}
-${ls_flag_f}
-${ls_flag_g}
-${ls_flag_h}
-${ls_flag_i}
-${ls_flag_k}
-${ls_flag_l}
-${ls_flag_m}
-${ls_flag_n}
-${ls_flag_o}
-${ls_flag_p}
-${ls_flag_q}
-${ls_flag_r}
-${ls_flag_s}
-${ls_flag_t}
-${ls_flag_u}
-${ls_flag_x}
-${ls_flag_1}
+${lsw_color}
+${lsw_file_inode}
+${lsw_flag_A}
+${lsw_flag_C}
+${lsw_flag_F}
+${lsw_flag_H}
+${lsw_flag_L}
+${lsw_flag_R}
+${lsw_flag_S}
+${lsw_flag_a}
+${lsw_flag_c}
+${lsw_flag_d}
+${lsw_flag_f}
+${lsw_flag_g}
+${lsw_flag_h}
+${lsw_flag_i}
+${lsw_flag_k}
+${lsw_flag_l}
+${lsw_flag_m}
+${lsw_flag_n}
+${lsw_flag_o}
+${lsw_flag_p}
+${lsw_flag_q}
+${lsw_flag_r}
+${lsw_flag_s}
+${lsw_flag_t}
+${lsw_flag_u}
+${lsw_flag_x}
+${lsw_flag_1}
 SUM
 )"
         builtin printf '%s\n' "${s%% *}"
 else
-        builtin eval "${1}=\$( ${ls_checksum_command} <<-SUM
+        builtin eval "${1}=\$( ${lsw_checksum_command} <<-SUM
 ${COLUMNS}
 ${LANG}
 ${LC_ALL}
@@ -382,35 +382,35 @@ ${LC_MESSAGES}
 ${LC_TIME}
 ${NLSPATH}
 ${TZ}
-${ls_color}
-${ls_file_inode}
-${ls_flag_A}
-${ls_flag_C}
-${ls_flag_F}
-${ls_flag_H}
-${ls_flag_L}
-${ls_flag_R}
-${ls_flag_S}
-${ls_flag_a}
-${ls_flag_c}
-${ls_flag_d}
-${ls_flag_f}
-${ls_flag_g}
-${ls_flag_h}
-${ls_flag_i}
-${ls_flag_k}
-${ls_flag_l}
-${ls_flag_m}
-${ls_flag_n}
-${ls_flag_o}
-${ls_flag_p}
-${ls_flag_q}
-${ls_flag_r}
-${ls_flag_s}
-${ls_flag_t}
-${ls_flag_u}
-${ls_flag_x}
-${ls_flag_1}
+${lsw_color}
+${lsw_file_inode}
+${lsw_flag_A}
+${lsw_flag_C}
+${lsw_flag_F}
+${lsw_flag_H}
+${lsw_flag_L}
+${lsw_flag_R}
+${lsw_flag_S}
+${lsw_flag_a}
+${lsw_flag_c}
+${lsw_flag_d}
+${lsw_flag_f}
+${lsw_flag_g}
+${lsw_flag_h}
+${lsw_flag_i}
+${lsw_flag_k}
+${lsw_flag_l}
+${lsw_flag_m}
+${lsw_flag_n}
+${lsw_flag_o}
+${lsw_flag_p}
+${lsw_flag_q}
+${lsw_flag_r}
+${lsw_flag_s}
+${lsw_flag_t}
+${lsw_flag_u}
+${lsw_flag_x}
+${lsw_flag_1}
 SUM
 )"
         builtin eval "${1}=\${!1%% *}"
@@ -429,12 +429,12 @@ fi
 
 LsW::Mkdir ()
 {
-        ${ls_mkdir_command} "${ls_dir_name}/${ls_file_inode}"
+        ${lsw_mkdir_command} "${lsw_dir_name}/${lsw_file_inode}"
 }
 
 LsW::Perform ()
 {
-        ${1} ${flags} "$ls_file_name"
+        ${1} ${flags} "$lsw_file_name"
 }
 
 LsW::RemoveColor ()
@@ -444,38 +444,38 @@ LsW::RemoveColor ()
 
 LsW::SetAliases ()
 if
-        ! >/dev/null 2>&1 builtin typeset -f __ls __ls_color
+        ! >/dev/null 2>&1 builtin typeset -f __lsX __lsX_color
 then
         builtin typeset \
-                __ls \
-                __ls_color;
+                __lsX \
+                __lsX_color;
         case $(command uname -s) in
         Darwin | DragonFly | FreeBSD)
-                __ls="() { IFS=' ' ls -G \\\$* ; }"
-                __ls_color="() { IFS=' ' CLICOLOR_FORCE=1 ls -G \\\$* ; }"
+                __lsX="() { IFS=' ' ls -G \\\$* ; }"
+                __lsX_color="() { IFS=' ' CLICOLOR_FORCE=1 ls -G \\\$* ; }"
         ;;
         OpenBSD)
                 if
                         >/dev/null command command -v colorls
                 then
-                        __ls="() { IFS=' ' colorls -G \\\$* ; }"
-                        __ls_color="() { IFS=' ' CLICOLOR_FORCE=1 colorls -G \\\$* ; }"
+                        __lsX="() { IFS=' ' colorls -G \\\$* ; }"
+                        __lsX_color="() { IFS=' ' CLICOLOR_FORCE=1 colorls -G \\\$* ; }"
                 else
                         if
                                 >/dev/null command command -v gls
                         then
-                                __ls="() { IFS=' ' gls --color=auto \\\$* ; }"
-                                __ls_color="() { IFS=" " gls --color=always \\\$* ; }"
+                                __lsX="() { IFS=' ' gls --color=auto \\\$* ; }"
+                                __lsX_color="() { IFS=" " gls --color=always \\\$* ; }"
                         else
-                                __ls="() { IFS=' ' ls \\\$* ; }"
-                                __ls_color="() { IFS=' ' ls \\\$* ; }"
+                                __lsX="() { IFS=' ' ls \\\$* ; }"
+                                __lsX_color="() { IFS=' ' ls \\\$* ; }"
                         fi
                 fi
         ;;
         *)
-                #__ls="() { IFS=' ' command ls --color=auto \\\$* ; }"
-                __ls="() { IFS=\\' \\' eval ls --color=auto \\\${*// /\\\\\\\\\\ \\} ; }"
-                __ls_color="() { IFS=\\' \\' eval ls --color=always \\\${*// /\\\\\\\\\\ \\} ; }"
+                #__lsX="() { IFS=' ' command ls --color=auto \\\$* ; }"
+                __lsX="() { IFS=\\' \\' eval ls --color=auto \\\${*// /\\\\\\\\\\ \\} ; }"
+                __lsX_color="() { IFS=\\' \\' eval ls --color=always \\\${*// /\\\\\\\\\\ \\} ; }"
         esac
 
         if
@@ -483,10 +483,10 @@ then
         then
                 builtin eval "${1}=\${!2}"
         else
-                builtin eval __ls="\${__ls:+${__ls}}"
-                builtin eval __ls_color="\${__ls_color:+${__ls_color}}"
-                builtin eval "__ls ${__ls}"
-                builtin eval "__ls_color ${__ls_color}"
+                builtin eval __lsX="\${__lsX:+${__lsX}}"
+                builtin eval __lsX_color="\${__lsX_color:+${__lsX_color}}"
+                builtin eval "__lsX ${__lsX}"
+                builtin eval "__lsX_color ${__lsX_color}"
         fi
 fi
 

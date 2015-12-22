@@ -28,28 +28,28 @@
 
 # -- FUNCTIONS.
 
-Ls::Build ()
+LsW::Build ()
 if
         [[ -n $ls_hook_prae && -n $ls_hook_post ]]
 then
         ${ls_hook_prae} \
-        | Ls::Perform "$ls_command" \
+        | LsW::Perform "$ls_command" \
         | ${ls_hook_post};
 elif
         [[ -n $ls_hook_prae ]]
 then
         ${ls_hook_prae} \
-        | Ls::Perform "$ls_command";
+        | LsW::Perform "$ls_command";
 elif
         [[ -n $ls_hook_post ]]
 then
-        Ls::Perform "$ls_command" \
+        LsW::Perform "$ls_command" \
         | ${ls_hook_post};
 else
-        Ls::Perform "$ls_command"
+        LsW::Perform "$ls_command"
 fi
 
-Ls::Do ()
+LsW::Do ()
 {
         builtin unset -v \
                 ls_flag_1 \
@@ -201,7 +201,7 @@ Ls::Do ()
                 ls_file_name="${LS_FILE_NAME:-${ls_file_name:-${PWD:-.}}}" \
                 ls_dir_name="${LS_DIR_NAME:-${TMPDIR:-/tmp}/ls}";
 
-        builtin typeset ls_file_inode="${LS_FILE_INODE:-$(Ls::GetInode : "$ls_file_name")}"
+        builtin typeset ls_file_inode="${LS_FILE_INODE:-$(LsW::GetInode : "$ls_file_name")}"
 
         builtin typeset -i \
                 ls_color=${LS_COLOR:-0} \
@@ -244,7 +244,7 @@ Ls::Do ()
                 ls_mkdir_command="${LS_MKDIR_COMMAND:-mkdir -p}" \
                 ls_print_command="${LS_PRINT_COMMAND:-cat}";
 
-        builtin typeset ls_checksum="${LS_CHECKSUM:-$(Ls::GetChecksum :)}"
+        builtin typeset ls_checksum="${LS_CHECKSUM:-$(LsW::GetChecksum :)}"
 
         for f in ${!ls_flag_*} ${!ls_remove*}
         do
@@ -282,36 +282,36 @@ Ls::Do ()
                 elif
                         (( ls_hook_tee ))
                 then
-                        Ls::PrintFile
+                        LsW::PrintFile
                 fi
         else
-                Ls::Mkdir
-                Ls::SetAliases
+                LsW::Mkdir
+                LsW::SetAliases
                 if
                         (( ls_color ))
                 then
-                        typeset ls_command=Ls::Color
+                        typeset ls_command=__ls_color
                 else
-                        typeset ls_command=Ls
+                        typeset ls_command=__ls
                 fi
                 if
                         (( ls_hook_tee ))
                 then
-                        Ls::Build \
+                        LsW::Build \
                         | command tee "${ls_dir_name}/${ls_file_inode}/${ls_checksum}";
                 else
                         > "${ls_dir_name}/${ls_file_inode}/${ls_checksum}" \
-                        Ls::Build
+                        LsW::Build
                 fi
         fi
 }
 
-Ls::PrintFile ()
+LsW::PrintFile ()
 {
         ${ls_print_command} "${ls_dir_name}/${ls_file_inode}/${ls_checksum}"
 }
 
-Ls::FindInode ()
+LsW::FindInode ()
 if
         [[ $1 == \: ]]
 then
@@ -325,7 +325,7 @@ else
         builtin eval "${1}=\$(command find -H "${2}/." ! -name . -prune -inum "$3" -exec basename '{}' \; 2> /dev/null)"
 fi
 
-Ls::GetChecksum ()
+LsW::GetChecksum ()
 if
         [[ $1 == \: ]]
 then
@@ -416,7 +416,7 @@ SUM
         builtin eval "${1}=\${!1%% *}"
 fi
 
-Ls::GetInode ()
+LsW::GetInode ()
 if
         [[ $1 == \: ]]
 then
@@ -427,22 +427,22 @@ else
         builtin eval "${1}=\${!1%% *}"
 fi
 
-Ls::Mkdir ()
+LsW::Mkdir ()
 {
         ${ls_mkdir_command} "${ls_dir_name}/${ls_file_inode}"
 }
 
-Ls::Perform ()
+LsW::Perform ()
 {
         ${1} ${flags} "$ls_file_name"
 }
 
-Ls::RemoveColor ()
+LsW::RemoveColor ()
 {
         command sed "s,\x1B\[[0-9;]*[a-zA-Z],,g;s/^ *//"
 }
 
-Ls::SetAliases ()
+LsW::SetAliases ()
 if
         ! >/dev/null 2>&1 builtin typeset -f __ls __ls_color
 then

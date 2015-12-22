@@ -4,16 +4,16 @@ The only non-POSIX option is `h` (human-readable), which appears in `GNU`, `Free
 
 ```
 Usage
-    [ <evar> ... ] Ls::Do [ <ls-opt> ... ]  Wrap up ls and track directory
+    [ <evar> ... ] LsW::Do [ <ls-opt> ... ]  Wrap up ls and track directory
                                             content
-    Ls::FindInode <ARG1> <path> <inum>      Find file in a directory via inode
+    LsW::FindInode <ARG1> <path> <inum>      Find file in a directory via inode
                                             number and get its basename
-    Ls::GetChecksum <ARG1>                  Create checksum of the ls-wrapper
+    LsW::GetChecksum <ARG1>                  Create checksum of the ls-wrapper
                                             environment
-    Ls::GetInode <ARG1> <path>              Get the inode number of a file
-    Ls::RemoveColor                         Remove all ANSI color codes from
+    LsW::GetInode <ARG1> <path>              Get the inode number of a file
+    LsW::RemoveColor                         Remove all ANSI color codes from
                                             stdin
-    Ls::SetAliases [ <ARG1> <fname> ]       Determine the ls command and create
+    LsW::SetAliases [ <ARG1> <fname> ]       Determine the ls command and create
                                             the wrapper functions '__ls' and
                                             '__ls_color' (depends on the OS)
 
@@ -33,7 +33,7 @@ Arguments
 
 Environment variables
     LS_CHECKSUM=STR
-            Default: 'Ls::GetChecksum :'
+            Default: 'LsW::GetChecksum :'
     LS_CHECKSUM_COMMAND=STR
             Default: 'md5sum'
     LS_COLOR=0/1
@@ -41,7 +41,7 @@ Environment variables
     LS_DIR_NAME=STR
             Default: '${TMPDIR:-/tmp}/ls'
     LS_FILE_INODE=STR
-            Default: 'Ls::GetInode : "$ls_file_name"'
+            Default: 'LsW::GetInode : "$ls_file_name"'
     LS_FILE_NAME=STR
             Default: '${PWD:-.}'
     LS_FLAG_{A,C,F,H,L,R,S,a,c,d,f,g,h,i,k,l,m,n,o,p,q,r,s,t,u,x,1}=0/1
@@ -73,9 +73,9 @@ Hook order
     ( LS_HOOK_PRAE && LS_HOOK_POST ) || LS_HOOK_PRAE || LS_HOOK_POST
 
     That is:
-        LS_HOOK_PRAE | Ls::Perform | LS_HOOK_POST
-        LS_HOOK_PRAE | Ls::Perform
-        Ls::Perform | LS_HOOK_POST
+        LS_HOOK_PRAE | LsW::Perform | LS_HOOK_POST
+        LS_HOOK_PRAE | LsW::Perform
+        LsW::Perform | LS_HOOK_POST
 Notes
     If LS_REMOVE is not 0, the file with LS_CHECKSUM will be removed from the file
     hierarchy.

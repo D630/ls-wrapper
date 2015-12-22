@@ -290,9 +290,9 @@ LsW::Do ()
                 if
                         (( lsw_color ))
                 then
-                        typeset lsw_command=__lsX_color
+                        typeset lsw_command=__ls_color
                 else
-                        typeset lsw_command=__lsX
+                        typeset lsw_command=__ls
                 fi
                 if
                         (( lsw_hook_tee ))
@@ -444,38 +444,38 @@ LsW::RemoveColor ()
 
 LsW::SetAliases ()
 if
-        ! >/dev/null 2>&1 builtin typeset -f __lsX __lsX_color
+        ! >/dev/null 2>&1 builtin typeset -f __ls __ls_color
 then
         builtin typeset \
-                __lsX \
-                __lsX_color;
+                __ls \
+                __ls_color;
         case $(command uname -s) in
         Darwin | DragonFly | FreeBSD)
-                __lsX="() { IFS=' ' ls -G \\\$* ; }"
-                __lsX_color="() { IFS=' ' CLICOLOR_FORCE=1 ls -G \\\$* ; }"
+                __ls="() { IFS=' ' ls -G \\\$* ; }"
+                __ls_color="() { IFS=' ' CLICOLOR_FORCE=1 ls -G \\\$* ; }"
         ;;
         OpenBSD)
                 if
                         >/dev/null command command -v colorls
                 then
-                        __lsX="() { IFS=' ' colorls -G \\\$* ; }"
-                        __lsX_color="() { IFS=' ' CLICOLOR_FORCE=1 colorls -G \\\$* ; }"
+                        __ls="() { IFS=' ' colorls -G \\\$* ; }"
+                        __ls_color="() { IFS=' ' CLICOLOR_FORCE=1 colorls -G \\\$* ; }"
                 else
                         if
                                 >/dev/null command command -v gls
                         then
-                                __lsX="() { IFS=' ' gls --color=auto \\\$* ; }"
-                                __lsX_color="() { IFS=" " gls --color=always \\\$* ; }"
+                                __ls="() { IFS=' ' gls --color=auto \\\$* ; }"
+                                __ls_color="() { IFS=" " gls --color=always \\\$* ; }"
                         else
-                                __lsX="() { IFS=' ' ls \\\$* ; }"
-                                __lsX_color="() { IFS=' ' ls \\\$* ; }"
+                                __ls="() { IFS=' ' ls \\\$* ; }"
+                                __ls_color="() { IFS=' ' ls \\\$* ; }"
                         fi
                 fi
         ;;
         *)
-                #__lsX="() { IFS=' ' command ls --color=auto \\\$* ; }"
-                __lsX="() { IFS=\\' \\' eval ls --color=auto \\\${*// /\\\\\\\\\\ \\} ; }"
-                __lsX_color="() { IFS=\\' \\' eval ls --color=always \\\${*// /\\\\\\\\\\ \\} ; }"
+                #__ls="() { IFS=' ' command ls --color=auto \\\$* ; }"
+                __ls="() { IFS=\\' \\' eval ls --color=auto \\\${*// /\\\\\\\\\\ \\} ; }"
+                __ls_color="() { IFS=\\' \\' eval ls --color=always \\\${*// /\\\\\\\\\\ \\} ; }"
         esac
 
         if
@@ -483,10 +483,10 @@ then
         then
                 builtin eval "${1}=\${!2}"
         else
-                builtin eval __lsX="\${__lsX:+${__lsX}}"
-                builtin eval __lsX_color="\${__lsX_color:+${__lsX_color}}"
-                builtin eval "__lsX ${__lsX}"
-                builtin eval "__lsX_color ${__lsX_color}"
+                builtin eval __ls="\${__ls:+${__ls}}"
+                builtin eval __ls_color="\${__ls_color:+${__ls_color}}"
+                builtin eval "__ls ${__ls}"
+                builtin eval "__ls_color ${__ls_color}"
         fi
 fi
 

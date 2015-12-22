@@ -1,35 +1,36 @@
 Some shell subroutines to wrap up the POSIX ls command and to track all directory contents via txt files in a separat file hierarchy.
 
-The only non-POSIX option is `h` (human-readable), which appears in `GNU`, `FreeBSD`, `OpenBSD` and `MacOSX` versions of ls. Color support is also not specified by POSIX, but is available in this wrapper via the environment variable `LSW_COLOR`; it depends on the ls version.
+The only non-POSIX argument in this wrapper is `h` (human-readable), which appears in `GNU`, `FreeBSD`, `OpenBSD` and `MacOSX` versions of ls. Color support is also not specified by POSIX, but is available via the environment variable `LSW_COLOR`; it depends on the ls version.
 
 ```
 Usage
-    [ <evar> ... ] LsW::Do [ <ls-opt> ... ]  Wrap up ls and track directory
+    [ <EVAR> ... ] \
+    LsW::Do \
+    [ <LSOPT> ... ] \
+    [ -- <PATH> ]                            Wrap up ls and track directory
                                              content
-    LsW::FindInode <ARG1> <path> <inum>      Find file in a directory via inode
+    LsW::FindInode <ARG1> <PATH> <INUM>      Find file in a directory via inode
                                              number and get its basename
-    LsW::GetChecksum <ARG1>                  Create checksum of the ls-wrapper
-                                             environment
-    LsW::GetInode <ARG1> <path>              Get the inode number of a file
+    LsW::GetInode <ARG1> <PATH>              Get the inode number of a file
     LsW::RemoveColor                         Remove all ANSI color codes from
                                              stdin
-    LsW::SetAliases [ <ARG1> <fname> ]       Determine the ls command and create
-                                             the wrapper functions '__ls' and
-                                             '__ls_color' (depends on the OS)
+    LsW::SetLsOs                             Determine the ls command and
+                                             declare the wrapper functions
+                                             '__ls' and '__ls_color'
+                                             (depends on the OS)
 
 Arguments
     :                                       Print the result to stdout
-    <ARG1>                                  ( : | <name> )
-    <evar>                                  Environment variable
-    <fname>                                 Function name. May be any declared
-                                            name; used to get the definition of
-                                            '__ls' and '__ls_color'
-    <inum>                                  Inode number
-    <ls-opt>                                Any option in the POSIX ls
+    <ARG1>                                  ( : | <NAME> )
+    <EVAR>                                  Environment variable
+    <FNAME>                                 Function name. May be any declared
+                                            name
+    <INUM>                                  Inode number
+    <LSOPT>                                 Any option in the POSIX ls
                                             specification. See evars LSW_FLAG_*
-    <name>                                  Name of the variable to have the
+    <NAME>                                  Name of the variable to have the
                                             result in store
-    <path>                                  Path name
+    <PATH>                                  Path name
 
 Environment variables
     LSW_CHECKSUM=STR
@@ -39,7 +40,7 @@ Environment variables
     LSW_COLOR=0/1
             Default: 0
     LSW_DIR_NAME=STR
-            Default: '${TMPDIR:-/tmp}/ls'
+            Default: '${TMPDIR:-/tmp}/lsW'
     LSW_FILE_INODE=STR
             Default: 'LsW::GetInode : "$lsw_file_name"'
     LSW_FILE_NAME=STR

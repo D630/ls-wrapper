@@ -455,13 +455,13 @@ then
         ;;
         OpenBSD)
                 if
-                        >/dev/null command command -v colorls
+                        >/dev/null builtin command -v colorls
                 then
                         function __ls { IFS=' ' command colorls -G ${*} ; }
                         function __ls_color { IFS=' ' CLICOLOR_FORCE=1 command colorls -G ${*} ; }
                 else
                         if
-                                >/dev/null command command -v gls
+                                >/dev/null builtin command -v gls
                         then
                                 function __ls  { IFS=' ' command gls --color=auto ${*} ; }
                                 function __ls_color { IFS=' ' command gls --color=always ${*} ; }

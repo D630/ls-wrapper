@@ -201,9 +201,9 @@ LsW::Do ()
         builtin typeset lsw_file_inode="${LSW_FILE_INODE:-$(LsW::GetInode : "$lsw_file_name")}"
 
         builtin typeset -i \
-                lsw_color=${LSW_COLOR:-0} \
-                lsw_hook_tee=${LSW_HOOK_TEE:-0} \
-                lsw_remove=${LSW_REMOVE:-0};
+                lsw_color=$LSW_COLOR \
+                lsw_hook_tee=$LSW_HOOK_TEE \
+                lsw_remove=$LSW_REMOVE;
 
         lsw_flag_A=${LSW_FLAG_A:-${lsw_flag_A}}
         lsw_flag_C=${LSW_FLAG_C:-${lsw_flag_C}}

@@ -198,7 +198,8 @@ LsW::Do ()
                 lsw_file_name="${LSW_FILE_NAME:-${lsw_file_name:-${PWD:-.}}}" \
                 lsw_dir_name="${LSW_DIR_NAME:-${TMPDIR:-/tmp}/lsW}";
 
-        builtin typeset lsw_file_inode="${LSW_FILE_INODE:-$(LsW::GetInode : "$lsw_file_name")}"
+        builtin typeset lsw_file_device="${LSW_FILE_DEVICE:-$(LsW::GetInode i "$lsw_file_name" ; builtin printf '%d\n' "${i[0]}")}"
+        builtin typeset lsw_file_inode="${LSW_FILE_INODE:-$(LsW::GetInode i "$lsw_file_name" ; builtin printf '%d\n' "${i[1]}")}"
 
         builtin typeset -i \
                 lsw_color=$LSW_COLOR \
@@ -271,12 +272,12 @@ LsW::Do ()
         fi
 
         if
-                [[ -f ${lsw_dir_name}/${lsw_file_inode}/${lsw_checksum} ]]
+                [[ -f ${lsw_dir_name}/${lsw_file_device}/${lsw_file_inode}/${lsw_checksum} ]]
         then
                 if
                         [[ -n $lsw_remove && $lsw_hook_tee -eq 0 ]]
                 then
-                        command rm "${lsw_dir_name}/${lsw_file_inode}/${lsw_checksum}"
+                        command rm "${lsw_dir_name}/${lsw_file_device}/${lsw_file_inode}/${lsw_checksum}"
                 elif
                         (( lsw_hook_tee ))
                 then
@@ -289,17 +290,17 @@ LsW::Do ()
                         (( lsw_hook_tee ))
                 then
                         LsW::Build \
-                        | command tee "${lsw_dir_name}/${lsw_file_inode}/${lsw_checksum}";
+                        | command tee "${lsw_dir_name}/${lsw_file_device}/${lsw_file_inode}/${lsw_checksum}";
                 else
                         LsW::Build \
-                        > "${lsw_dir_name}/${lsw_file_inode}/${lsw_checksum}";
+                        > "${lsw_dir_name}/${lsw_file_device}/${lsw_file_inode}/${lsw_checksum}";
                 fi
         fi
 }
 
 LsW::PrintFile ()
 {
-        ${lsw_print_command} "${lsw_dir_name}/${lsw_file_inode}/${lsw_checksum}"
+        ${lsw_print_command} "${lsw_dir_name}/${lsw_file_device}/${lsw_file_inode}/${lsw_checksum}"
 }
 
 LsW::FindInode ()
@@ -314,7 +315,13 @@ then
                 -exec basename '{}' \;
 else
         builtin typeset -n lsw_ref="$1"
-        lsw_ref=$(command find -H "${2}/." ! -name . -prune -inum "$3" -exec basename '{}' \; 2>/dev/null)
+        lsw_ref=$(
+                command find -H "${2}/." \
+                        ! -name . \
+                        -prune \
+                        -inum "$3" \
+                        -exec basename '{}' \; 2>/dev/null
+        )
         builtin unset -n lsw_ref
 fi
 
@@ -333,6 +340,7 @@ ${LC_TIME}
 ${NLSPATH}
 ${TZ}
 ${lsw_color}
+${lsw_file_device}
 ${lsw_file_inode}
 ${lsw_flag_A}
 ${lsw_flag_C}
@@ -378,6 +386,7 @@ ${LC_TIME}
 ${NLSPATH}
 ${TZ}
 ${lsw_color}
+${lsw_file_device}
 ${lsw_file_inode}
 ${lsw_flag_A}
 ${lsw_flag_C}
@@ -416,18 +425,22 @@ LsW::GetInode ()
 if
         [[ $1 == \: ]]
 then
-        builtin typeset i="$(ls -1id "$2")"
-        builtin printf '%s\n' "${i%% *}"
+        #builtin typeset i="$(ls -1id "$2")"
+        #builtin printf '%s\n' "${i%% *}"
+        command stat --printf "%d\n%i\n" "${2:-.}"
 else
         builtin typeset -n lsw_ref="$1"
-        lsw_ref=$(ls -1id "$2")
-        lsw_ref=${lsw_ref%% *}
+        #lsw_ref=$(ls -1id "$2")
+        #lsw_ref=${lsw_ref%% *}
+        builtin mapfile -t lsw_ref < <(
+                command stat --printf "%d\n%i\n" "${2:-.}"
+        )
         builtin unset -n lsw_ref
 fi
 
 LsW::Mkdir ()
 {
-        ${lsw_mkdir_command} "${lsw_dir_name}/${lsw_file_inode}"
+        ${lsw_mkdir_command} "${lsw_dir_name}/${lsw_file_device}/${lsw_file_inode}"
 }
 
 LsW::Perform ()
